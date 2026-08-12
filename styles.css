@@ -114,25 +114,28 @@
   @media (max-width:760px){ .navlinks{ display:none; } }
 
   /* ---------- Hero ---------- */
-  .hero{
-    position:relative;
-    padding:110px 0 90px;
-    border-bottom:1px solid var(--line);
-    background:
-      radial-gradient(ellipse 900px 500px at 80% -10%, rgba(161,59,46,0.18), transparent 60%),
-      linear-gradient(180deg, #16150f 0%, #17160f 100%);
-  }
-  .hero-grid{
-    display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px; align-items:center;
-  }
-  @media (max-width:900px){ .hero-grid{ grid-template-columns:1fr; } }
+.hero {
+  position: relative;
+  background-image:
+    linear-gradient(180deg, rgba(10,10,10,.55), rgba(10,10,10,.8)),
+    url('imgs/Schermafbeelding_2026-08-12_165339.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.hero-grid {
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:60px;
+  align-items:center;
+}
   .hero h1{
     font-size:clamp(42px, 6vw, 74px);
     line-height:0.95;
     font-weight:700;
     margin:18px 0 22px;
   }
-  .hero h1 .accent{ color:var(--rust-bright); }
+  hero h1 .accent{ color:var(--rust-bright); }
   .hero p.lede{
     font-size:17px; line-height:1.6; color:var(--sand);
     max-width:480px; margin-bottom:34px;
@@ -271,11 +274,14 @@
   footer .fmono{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--sand); letter-spacing:0.05em; }
 /* ---------- Page header (non-home pages) ---------- */
 .page-header{
+  position: relative;
   padding:70px 0 50px;
   border-bottom:1px solid var(--line);
-  background:
-    radial-gradient(ellipse 800px 400px at 85% -20%, rgba(161,59,46,0.16), transparent 60%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
+
 .page-header h1{
   font-size:clamp(36px,5.5vw,58px);
   font-weight:700;
@@ -370,4 +376,22 @@
   border-radius: 8px; /* Matches your site's card corners */
   margin-top: 50px;
   margin-bottom: 5px;
+}
+
+.bedrock-header{
+  background-image:
+    linear-gradient(180deg, rgba(10,10,10,.6), rgba(10,10,10,.85)),
+    url('imgs/bedrock.png');
+}
+
+.rules-header{
+  background-image:
+    linear-gradient(180deg, rgba(10,10,10,.6), rgba(10,10,10,.85)),
+    url('imgs/rule.png');
+}
+
+.java-header{
+    background-image:
+    linear-gradient(180deg, rgba(10,10,10,.6), rgba(10,10,10,.85)),
+    url('imgs/tank-.png');
 }
