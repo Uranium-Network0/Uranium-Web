@@ -12,13 +12,14 @@
 <header>
   <nav>
     <div class="logo">URANIUM<span>NETWORK</span></div>
-    <div class="navlinks">
+    <div class="navlinks" id="navlinks">
       <a href="home.html">Home</a>
       <a href="rules.html">Rules</a>
       <a href="java.html">Java</a>
       <a href="bedrock.html">Bedrock</a>
     </div>
     <a class="btn ghost" href="https://discord.gg/tf7jtqgWJr" target="_blank" rel="noopener" style="padding:10px 20px; font-size:13px;">Join Discord</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
   </nav>
 </header>
 
@@ -81,6 +82,10 @@
     <div class="fmono"><a href="https://discord.gg/tf7jtqgWJr" target="_blank" rel="noopener">discord.gg/XhJDmRUzJ</a></div>
   </div>
 </footer>
-
+<script>
+document.getElementById('menuToggle').addEventListener('click', () => {
+  document.getElementById('navlinks').classList.toggle('open');
+});
+</script>
 </body>
 </html>
