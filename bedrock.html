@@ -37,10 +37,10 @@
     <div class="connect-box">
       <div>
         <div class="label">BEDROCK SERVER IP</div>
-        <div class="ip">185.206.148.172</div>
+        <div class="ip" id="bedrock-ip">185.206.148.172</div>
         <div class="port">Port: 25656 (default)</div>
       </div>
-      <a class="btn" href="#">Copy IP</a>
+      <button class="btn copy-btn" data-copy="bedrock-ip">Copy IP</button>
     </div>
 
     <div class="section-head">
@@ -112,6 +112,21 @@
 <script>
 document.getElementById('menuToggle').addEventListener('click', () => {
   document.getElementById('navlinks').classList.toggle('open');
+});
+</script>
+<script>
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetId = btn.getAttribute('data-copy');
+    const text = document.getElementById(targetId).textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      const original = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = original; }, 1500);
+    }).catch(err => {
+      console.error('Copy failed:', err);
+    });
+  });
 });
 </script>
 </body>

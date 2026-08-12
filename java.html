@@ -38,20 +38,21 @@
     <div class="connect-box">
       <div>
         <div class="label">JAVA SERVER IP</div>
-        <div class="ip">185.206.150.248:25605
-</div>
+        <div class="ip" id="java-ip">185.206.150.248:25605</div>
       </div>
-      <a class="btn" href="#">Copy IP</a>
+      <button class="btn copy-btn" data-copy="java-ip">Copy IP</button>
     </div>
-      <div class="wrap">
+  </div>
+  <div class="wrap">
     <div class="connect-box">
       <div>
         <div class="label">ModPack Link</div>
-        <div class="ip"> https://www.curseforge.com/minecraft/modpacks/windcrest-war-smp
-        </div>
+        <div class="ip" id="modpack-link">https://www.curseforge.com/minecraft/modpacks/windcrest-war-smp</div>
       </div>
-      <a class="btn" href="#">Copy Link</a>
+      <button class="btn copy-btn" data-copy="modpack-link">Copy Link</button>
     </div>
+  </div>
+
 
 
     <div class="section-head">
@@ -69,7 +70,7 @@
       </div>
       <div class="req-card">
         <h4>Account requirements</h4>
-        <p>This server is cracked and does not require a authenticated microsoft account</p>
+        <p>This server is cracked and does not require an authenticated microsoft account</p>
       </div>
       <div class="req-card">
         <h4>Whitelist status</h4>
@@ -122,6 +123,21 @@
 <script>
 document.getElementById('menuToggle').addEventListener('click', () => {
   document.getElementById('navlinks').classList.toggle('open');
+});
+</script>
+<script>
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetId = btn.getAttribute('data-copy');
+    const text = document.getElementById(targetId).textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      const original = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = original; }, 1500);
+    }).catch(err => {
+      console.error('Copy failed:', err);
+    });
+  });
 });
 </script>
 </body>
