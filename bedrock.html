@@ -2,17 +2,46 @@
 <html lang="en">
 <head>
   <meta property="og:title" content="Uranium Network">
-<meta property="og:description" content="A faction-driven Minecraft warfare server — raid enemy bases, hold the line for your team, and climb the war table.">
-<meta property="og:image" content="https://Uranium-Network0.github.io/Uranium-Web/imgs/use-pre.png">
-<meta property="og:url" content="https://Uranium-Network0.github.io/Uranium-Web/imgs/use-pre.png">
-<meta property="og:type" content="website">
-<meta name="theme-color" content="#3c7d1f">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Uranium Network - Bedrock</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+  <meta property="og:description" content="A faction-driven Minecraft warfare server — raid enemy bases, hold the line for your team, and climb the war table.">
+  <meta property="og:image" content="https://Uranium-Network0.github.io/Uranium-Web/imgs/use-pre.png">
+  <meta property="og:url" content="https://Uranium-Network0.github.io/Uranium-Web/imgs/use-pre.png">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#3c7d1f">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uranium Network - Bedrock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- KILL FEED STYLES -->
+  <style>
+    .kill-feed-container {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 16px;
+      max-height: 350px;
+      overflow-y: auto;
+    }
+    .kill-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+    }
+    .kill-item:last-child {
+      border-bottom: none;
+    }
+    .killer { color: #ff4d4d; font-weight: 600; }
+    .victim { color: #4da6ff; font-weight: 600; }
+    .weapon { color: #888; font-size: 12px; }
+    .time { color: #555; font-size: 12px; margin-left: 10px; }
+    .no-kills { color: #888; text-align: center; padding: 20px; font-style: italic; }
+  </style>
 </head>
 <body>
 
@@ -25,7 +54,7 @@
       <a href="java.html">Java</a>
       <a href="bedrock.html">Bedrock</a>
     </div>
-     <a class="btn ghost" href="https://discord.gg/tf7jtqgWJr" target="_blank" rel="noopener" style="padding:10px 20px; font-size:13px;">Discord</a>
+    <a class="btn ghost" href="https://discord.gg/tf7jtqgWJr" target="_blank" rel="noopener" style="padding:10px 20px; font-size:13px;">Discord</a>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
   </nav>
 </header>
@@ -72,7 +101,22 @@
       </div>
     </div>
   </div>
-   <div class="wrap"><div class="requirements-image-container"><img src="imgs/use2.png" alt="Requirements" class="requirements-img"></div></div>
+  <div class="wrap"><div class="requirements-image-container"><img src="imgs/use2.png" alt="Requirements" class="requirements-img"></div></div>
+</section>
+
+<!-- LIVE KILL FEED SECTION -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Live Activity</div>
+      <h2>Bedrock Kill Feed</h2>
+    </div>
+    <div class="kill-feed-container">
+      <div id="kills" class="kill-feed">
+        <div class="no-kills">Connecting to server feed...</div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section>
@@ -115,6 +159,7 @@
     <div class="fmono"><a href="https://discord.gg/tf7jtqgWJr" target="_blank" rel="noopener">discord.gg/XhJDmRUzJ</a></div>
   </div>
 </footer>
+
 <script>
 document.getElementById('menuToggle').addEventListener('click', () => {
   document.getElementById('navlinks').classList.toggle('open');
@@ -134,6 +179,57 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
     });
   });
 });
+</script>
+
+<!-- LIVE KILL FEED SCRIPT -->
+<script>
+    // UPDATE THIS to your Cloudflare Worker URL or the Render URL
+    const WORKER_URL = "https://bedrock-fetch.onrender.com/api/kills";
+
+    async function fetchKills() {
+        try {
+            const response = await fetch(WORKER_URL);
+            const kills = await response.json();
+            
+            const container = document.getElementById("kills");
+            if (!kills || kills.length === 0) {
+                container.innerHTML = `<div class="no-kills">No kills recorded yet.</div>`;
+                return;
+            }
+
+            container.innerHTML = kills.map(k => {
+                // Determine time formatted
+                const timeString = k.timestamp ? new Date(k.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '';
+                const weaponHtml = k.weapon ? `<span class="weapon">[${escapeHtml(k.weapon)}]</span>` : '';
+                
+                return `
+                <div class="kill-item">
+                    <div>
+                        <span class="killer">${escapeHtml(k.killer)}</span> 
+                        <span style="color: #888; padding: 0 4px;">killed</span> 
+                        <span class="victim">${escapeHtml(k.victim)}</span>
+                        ${weaponHtml}
+                    </div>
+                    <span class="time">${timeString}</span>
+                </div>
+                `;
+            }).join('');
+        } catch (err) {
+            console.error("Failed to load kills", err);
+            // Don't overwrite the UI with an error state if it's just a temporary network blip
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>'"]/g, 
+            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+        );
+    }
+
+    // Initial fetch, then poll every 3 seconds
+    fetchKills();
+    setInterval(fetchKills, 3000);
 </script>
 </body>
 </html>
