@@ -440,3 +440,9 @@
     linear-gradient(180deg, rgba(10,10,10,.6), rgba(10,10,10,.85)),
     url('imgs/tank-.png');
 }
+
+.java-header-infuse{
+    background-image:
+    linear-gradient(180deg, rgba(10,10,10,.6), rgba(10,10,10,.85)),
+    url('imgs/BANNER-INF.png');
+}
